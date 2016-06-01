@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Ольга Боровикова](https://up.htmlacademy.ru/javascript/5/user/187938).
-* Наставник: `Неизвестно`.
+* Наставник: `Евгений Щепотьев`.
 
 ---
 
