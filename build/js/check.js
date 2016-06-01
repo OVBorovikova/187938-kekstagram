@@ -10,13 +10,13 @@ function getMessage(a, b) {
   } else if (typeof b == "object") {
     var square = 0;
     for (i = 0; i < a.length; i++) {
-      square = square + a[i] * b[i];
+      square += a[i] * b[i];
     }
     return "Общая площадь артефактов сжатия: " + square + " пикселей";
   } else {
     var sum = 0;
     for (i = 0; i < a.length; i++) {
-      sum = sum + a[i];
+      sum += a[i];
     }
     return "Количество красных точек во всех строчках изображения: " + sum;
   }
