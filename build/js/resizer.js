@@ -89,14 +89,9 @@
       // чего-либо с другой обводкой.
 
       // Толщина линии.
-      this._ctx.lineWidth = 6;
+      this._ctx.lineWidth = 4;
       // Цвет обводки.
-      this._ctx.strokeStyle = '#ffe753';
-      // Размер штрихов. Первый элемент массива задает длину штриха, второй
-      // расстояние между соседними штрихами.
-      // this._ctx.setLineDash([15, 10]);
-      // Смещение первого штриха от начала линии.
-      // this._ctx.lineDashOffset = 7;
+      this._ctx.strokeStyle = '#ffe753';      
       // Сохранение состояния канваса.
       // Подробней см. строку 132.
       this._ctx.save();
@@ -110,6 +105,8 @@
       // нужно отрисовать и координаты его верхнего левого угла.
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
+
+      // Отрисовка черного слоя вокруг рамки
 
       this._ctx.beginPath();
       this._ctx.moveTo(-this._container.width / 2, -this._container.height / 2);
@@ -136,41 +133,32 @@
       this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
       this._ctx.fill('evenodd');
 
+      // Вывод размеров кадрируемого изображения
+
       this._ctx.font = '14px Tahoma';
       this._ctx.fillStyle = 'white';
       this._ctx.textAlign = 'center';
       this._ctx.textBaseline = 'bottom';
       this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, 0, (-this._resizeConstraint.side / 2) - 15);
 
+      // Отрисовка рамки желтыми точками
 
-      // Отрисовка прямоугольника, обозначающего область изображения после
-      // кадрирования. Координаты задаются от центра.
-      // this._ctx.strokeRect(
-      //     (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-      //     (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-      //     this._resizeConstraint.side - this._ctx.lineWidth / 2,
-      //     this._resizeConstraint.side - this._ctx.lineWidth / 2);
-      // this._ctx.strokeStyle = '#ffe753';
-      // this._ctx.lineWidth = 6;
-
-      for (var i=0;i<=this._resizeConstraint.side- this._ctx.lineWidth / 2;i+=20){
-        // this._ctx.lineDashOffset = 7;
+      for (var i=1;i<this._resizeConstraint.side - this._ctx.lineWidth * 2;i+=13){
 
            this._ctx.beginPath();
-           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i,-this._resizeConstraint.side / 2,3,0,Math.PI*2,true);
-           this._ctx.stroke();
-
-
-           this._ctx.beginPath();
-           this._ctx.arc(this._resizeConstraint.side / 2 - this._ctx.lineWidth,-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,3,0,Math.PI*2,true);
+           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i,-this._resizeConstraint.side / 2,2,0,Math.PI*2,true);
            this._ctx.stroke();
 
            this._ctx.beginPath();
-           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,this._resizeConstraint.side / 2 - this._ctx.lineWidth,3,0,Math.PI*2,true);
+           this._ctx.arc(this._resizeConstraint.side / 2 - this._ctx.lineWidth * 1.5,-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,2,0,Math.PI*2,true);
            this._ctx.stroke();
 
            this._ctx.beginPath();
-           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth,-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,3,0,Math.PI*2,true);
+           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,this._resizeConstraint.side / 2 - this._ctx.lineWidth * 1.5,2,0,Math.PI*2,true);
+           this._ctx.stroke();
+
+           this._ctx.beginPath();
+           this._ctx.arc(-this._resizeConstraint.side / 2,-this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i,2,0,Math.PI*2,true);
            this._ctx.stroke();
          };
 
