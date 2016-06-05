@@ -91,7 +91,7 @@
       // Толщина линии.
       this._ctx.lineWidth = 4;
       // Цвет обводки.
-      this._ctx.strokeStyle = '#ffe753';      
+      this._ctx.strokeStyle = '#ffe753';
       // Сохранение состояния канваса.
       // Подробней см. строку 132.
       this._ctx.save();
@@ -143,25 +143,23 @@
 
       // Отрисовка рамки желтыми точками
 
-      for (var i=1;i<this._resizeConstraint.side - this._ctx.lineWidth * 2;i+=13){
+      for (var i = 1; i < this._resizeConstraint.side - this._ctx.lineWidth * 2; i += 13) {
+        this._ctx.beginPath();
+        this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i, -this._resizeConstraint.side / 2, 2, 0, Math.PI * 2, true);
+        this._ctx.stroke();
 
-           this._ctx.beginPath();
-           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i,-this._resizeConstraint.side / 2,2,0,Math.PI*2,true);
-           this._ctx.stroke();
+        this._ctx.beginPath();
+        this._ctx.arc(this._resizeConstraint.side / 2 - this._ctx.lineWidth * 1.5, -this._resizeConstraint.side / 2 + this._ctx.lineWidth + i, 2, 0, Math.PI * 2, true);
+        this._ctx.stroke();
 
-           this._ctx.beginPath();
-           this._ctx.arc(this._resizeConstraint.side / 2 - this._ctx.lineWidth * 1.5,-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,2,0,Math.PI*2,true);
-           this._ctx.stroke();
+        this._ctx.beginPath();
+        this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i, this._resizeConstraint.side / 2 - this._ctx.lineWidth * 1.5, 2, 0, Math.PI * 2, true);
+        this._ctx.stroke();
 
-           this._ctx.beginPath();
-           this._ctx.arc(-this._resizeConstraint.side / 2 + this._ctx.lineWidth + i,this._resizeConstraint.side / 2 - this._ctx.lineWidth * 1.5,2,0,Math.PI*2,true);
-           this._ctx.stroke();
-
-           this._ctx.beginPath();
-           this._ctx.arc(-this._resizeConstraint.side / 2,-this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i,2,0,Math.PI*2,true);
-           this._ctx.stroke();
-         };
-
+        this._ctx.beginPath();
+        this._ctx.arc(-this._resizeConstraint.side / 2, -this._resizeConstraint.side / 2 + this._ctx.lineWidth / 2 + i, 2, 0, Math.PI * 2, true);
+        this._ctx.stroke();
+      }
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
