@@ -71,8 +71,35 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
+  var spaceLeft = document.getElementById('resize-x');
+  var spaceTop = document.getElementById('resize-y');
+  var pictureSide = document.getElementById('resize-size');
+  var nextButton = document.getElementById('resize-fwd');
+  var pictureWidth = currentResizer._image.naturalWidth;
+
   function resizeFormIsValid() {
-    return true;
+
+    spaceLeft.min = 0; /** Это условие вообще буде работать в таком виде? **/
+    spaceTop.min = 0;
+
+    /** Ограничения на ввод данных:
+    Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
+    Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.**/
+
+    if ((+spaceLeft + +pictureSide <= pictureWidth) &&
+    (+spaceTop + +pictureSide <= pictureWidth)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /** Добавление атрибута disabled для кнопки **/
+
+  if (resizeFormIsValid()) {
+    nextButton.removeAttribute('disabled');
+  } else {
+    nextButton.setAttribute('disabled', 'value'); /** Не понимаю, какое знаечние тут нужно добавлять **/
   }
 
   /**
