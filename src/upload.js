@@ -71,35 +71,40 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
+
   var spaceLeft = document.getElementById('resize-x');
   var spaceTop = document.getElementById('resize-y');
   var pictureSide = document.getElementById('resize-size');
   var nextButton = document.getElementById('resize-fwd');
-  var pictureWidth = currentResizer._image.naturalWidth;
+
+  spaceLeft.min = 0;
+  spaceTop.min = 0;
+  pictureSide.min = 0;
+
+  spaceLeft.onchange = function() {
+    resizeFormIsValid();
+  };
+  spaceTop.onchange = function() {
+    resizeFormIsValid();
+  };
+  pictureSide.onchange = function() {
+    resizeFormIsValid();
+  };
 
   function resizeFormIsValid() {
 
-    spaceLeft.min = 0; /** Это условие вообще буде работать в таком виде? **/
-    spaceTop.min = 0;
+  /** Проверка введенных данных:
+  Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
+  Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
+  Поля «сверху» и «слева» не могут быть отрицательными.**/
 
-    /** Ограничения на ввод данных:
-    Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
-    Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.**/
-
-    if ((+spaceLeft + +pictureSide <= pictureWidth) &&
-    (+spaceTop + +pictureSide <= pictureWidth)) {
+    if ((parseInt(spaceLeft.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalWidth) && (parseInt(spaceTop.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalHeight) && (parseInt(spaceLeft.value, 10) > 0) && (parseInt(spaceTop.value, 10) > 0)) {
+      nextButton.removeAttribute('disabled');
       return true;
     } else {
+      nextButton.setAttribute('disabled', ' ');
       return false;
     }
-  }
-
-  /** Добавление атрибута disabled для кнопки **/
-
-  if (resizeFormIsValid()) {
-    nextButton.removeAttribute('disabled');
-  } else {
-    nextButton.setAttribute('disabled', 'value'); /** Не понимаю, какое знаечние тут нужно добавлять **/
   }
 
   /**
