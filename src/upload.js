@@ -75,11 +75,10 @@
   var spaceLeft = document.getElementById('resize-x');
   var spaceTop = document.getElementById('resize-y');
   var pictureSide = document.getElementById('resize-size');
-  var nextButton = document.getElementById('resize-fwd');
 
   spaceLeft.min = 0;
   spaceTop.min = 0;
-  pictureSide.min = 0;
+  pictureSide.min = 1;
 
   spaceLeft.onchange = function() {
     resizeFormIsValid();
@@ -98,7 +97,7 @@
   Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
   Поля «сверху» и «слева» не могут быть отрицательными.**/
 
-    if ((parseInt(spaceLeft.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalWidth) && (parseInt(spaceTop.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalHeight) && (parseInt(spaceLeft.value, 10) > 0) && (parseInt(spaceTop.value, 10) > 0)) {
+    if ((parseInt(spaceLeft.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalWidth) && (parseInt(spaceTop.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalHeight) && (parseInt(spaceLeft.value, 10) >= 0) && (parseInt(spaceTop.value, 10) >= 0)) {
       nextButton.removeAttribute('disabled');
       return true;
     } else {
@@ -112,6 +111,9 @@
    * @type {HTMLFormElement}
    */
   var uploadForm = document.forms['upload-select-image'];
+
+  var nextButton = document.getElementById('resize-fwd');
+  nextButton.setAttribute('disabled', ' ');
 
   /**
    * Форма кадрирования изображения.
