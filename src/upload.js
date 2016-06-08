@@ -97,7 +97,13 @@
   Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
   Поля «сверху» и «слева» не могут быть отрицательными.**/
 
-    if ((parseInt(spaceLeft.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalWidth) && (parseInt(spaceTop.value, 10) + parseInt(pictureSide.value, 10) <= currentResizer._image.naturalHeight) && (parseInt(spaceLeft.value, 10) >= 0) && (parseInt(spaceTop.value, 10) >= 0)) {
+    var left = parseInt(spaceLeft.value, 10);
+    var top = parseInt(spaceTop.value, 10);
+    var side = parseInt(pictureSide.value, 10);
+
+    if ((left + side <= currentResizer._image.naturalWidth) &&
+        (top + side <= currentResizer._image.naturalHeight) &&
+        (left >= 0) && (top >= 0)) {
       nextButton.removeAttribute('disabled');
       return true;
     } else {
