@@ -7,6 +7,8 @@
 
 'use strict';
 
+var browserCookies = require('browser-cookies');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -258,6 +260,7 @@
    * записав сохраненный фильтр в cookie.
    * @param {Event} evt
    */
+
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
@@ -267,6 +270,24 @@
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+
+  /** Вычисление количества дней, прошедших с ближайшего дня рождения **/
+
+  var fullBirthdayDate = new Date('1989-02-10');
+  var actualDate = new Date();
+  var actualYear = actualDate.getFullYear();
+  var lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear);
+
+  if (actualDate < lastBirthdayDate) {
+    var lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear - 1);
+  }
+
+  var dateToExpire = (Date.now() + (actualDate - lastBirthdayDate));
+  var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+
+// browserCookies.set('filter', filterSepia.value, {expires: formattedDateToExpire});
+
+
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
