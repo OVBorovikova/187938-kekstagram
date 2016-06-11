@@ -94,18 +94,18 @@ var browserCookies = require('browser-cookies');
 
   function resizeFormIsValid() {
 
-  /** Проверка введенных данных:
-  Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
-  Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
-  Поля «сверху» и «слева» не могут быть отрицательными.**/
+    /** Проверка введенных данных:
+    Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
+    Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
+    Поля «сверху» и «слева» не могут быть отрицательными.**/
 
     var left = parseInt(spaceLeft.value, 10);
     var top = parseInt(spaceTop.value, 10);
     var side = parseInt(pictureSide.value, 10);
 
     if ((left + side <= currentResizer._image.naturalWidth) &&
-        (top + side <= currentResizer._image.naturalHeight) &&
-        (left >= 0) && (top >= 0)) {
+      (top + side <= currentResizer._image.naturalHeight) &&
+      (left >= 0) && (top >= 0)) {
       nextButton.removeAttribute('disabled');
       return true;
     } else {
@@ -260,7 +260,6 @@ var browserCookies = require('browser-cookies');
    * записав сохраненный фильтр в cookie.
    * @param {Event} evt
    */
-
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
@@ -279,16 +278,38 @@ var browserCookies = require('browser-cookies');
   var lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear);
 
   if (actualDate < lastBirthdayDate) {
-    var lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear - 1);
+    lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear - 1);
   }
 
   var dateToExpire = (Date.now() + (actualDate - lastBirthdayDate));
   var formattedDateToExpire = new Date(dateToExpire).toUTCString();
 
-// browserCookies.set('filter', filterSepia.value, {expires: formattedDateToExpire});
+  /** Куки  **/
 
+  var filterNone = document.getElementById('upload-filter-none');
+  var filterChrome = document.getElementById('upload-filter-chrome');
+  var filterSepia = document.getElementById('upload-filter-sepia');
 
+  filterNone.onchange = function() {
+    checkFilter();
+  };
+  filterChrome.onchange = function() {
+    checkFilter();
+  };
+  filterSepia.onchange = function() {
+    checkFilter();
+  };
 
+  function checkFilter() {
+    if (filterChrome.checked) {
+      browserCookies.set('filterChrome', 'filterChrome.value', {expires: formattedDateToExpire});
+    } else
+    if (filterSepia.checked) {
+      browserCookies.set('filterSepia', 'filterSepia.value', {expires: formattedDateToExpire});
+    } else {
+      browserCookies.set('filterNone', 'filterNone.value', {expires: formattedDateToExpire});
+    }
+  }
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
