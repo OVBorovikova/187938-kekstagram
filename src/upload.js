@@ -299,7 +299,7 @@ var browserCookies = require('browser-cookies');
         selectedFilter = filters[i];
       }
     }
-    browserCookies.set('filter', selectedFilter, {expires: formattedDateToExpire});
+    browserCookies.get('filter', selectedFilter.value, {expires: formattedDateToExpire});
   }
 
   /** Записываем выбранный фильтр в куки  **/
