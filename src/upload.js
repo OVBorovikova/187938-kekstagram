@@ -94,18 +94,18 @@ var browserCookies = require('browser-cookies');
 
   function resizeFormIsValid() {
 
-    /** Проверка введенных данных:
-    Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
-    Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
-    Поля «сверху» и «слева» не могут быть отрицательными.**/
+  /** Проверка введенных данных:
+  Сумма значений полей «слева» и «сторона» не должна быть больше ширины исходного изображения.
+  Сумма значений полей «сверху» и «сторона» не должна быть больше высоты исходного изображения.
+  Поля «сверху» и «слева» не могут быть отрицательными.**/
 
     var left = parseInt(spaceLeft.value, 10);
     var top = parseInt(spaceTop.value, 10);
     var side = parseInt(pictureSide.value, 10);
 
     if ((left + side <= currentResizer._image.naturalWidth) &&
-      (top + side <= currentResizer._image.naturalHeight) &&
-      (left >= 0) && (top >= 0)) {
+        (top + side <= currentResizer._image.naturalHeight) &&
+        (left >= 0) && (top >= 0)) {
       nextButton.removeAttribute('disabled');
       return true;
     } else {
