@@ -263,6 +263,9 @@ var browserCookies = require('browser-cookies');
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    checkFilter();
+    setFilter();
+
     cleanupResizer();
     updateBackground();
 
@@ -284,32 +287,39 @@ var browserCookies = require('browser-cookies');
   var dateToExpire = (Date.now() + (actualDate - lastBirthdayDate));
   var formattedDateToExpire = new Date(dateToExpire).toUTCString();
 
-  /** Куки  **/
+  /** Проверяем, какой фильтр был выбран в прошлый раз  **/
+
+  function checkFilter() {
+
+    var selectedFilter = browserCookies.get('filter');
+    var filters = document.getElementsByName('upload-filter');
+
+    for (var i = 0; i < filters.length; i++) {
+      if (filters[i].checked) {
+        selectedFilter = filters[i];
+      }
+    }
+    browserCookies.set('filter', selectedFilter, {expires: formattedDateToExpire});
+  }
+
+  /** Записываем выбранный фильтр в куки  **/
 
   var filterNone = document.getElementById('upload-filter-none');
   var filterChrome = document.getElementById('upload-filter-chrome');
   var filterSepia = document.getElementById('upload-filter-sepia');
 
-  filterNone.onchange = function() {
-    checkFilter();
-  };
-  filterChrome.onchange = function() {
-    checkFilter();
-  };
-  filterSepia.onchange = function() {
-    checkFilter();
-  };
-
-  function checkFilter() {
+  function setFilter() {
     if (filterChrome.checked) {
-      browserCookies.set('filterChrome', 'filterChrome.value', {expires: formattedDateToExpire});
+      browserCookies.set('filterChrome', filterChrome.value, {expires: formattedDateToExpire});
     } else
     if (filterSepia.checked) {
-      browserCookies.set('filterSepia', 'filterSepia.value', {expires: formattedDateToExpire});
+      browserCookies.set('filterSepia', filterSepia.value, {expires: formattedDateToExpire});
     } else {
-      browserCookies.set('filterNone', 'filterNone.value', {expires: formattedDateToExpire});
+      browserCookies.set('filterNone', filterNone.value, {expires: formattedDateToExpire});
     }
   }
+
+
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
    * выбранному значению в форме.
