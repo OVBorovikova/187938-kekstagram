@@ -298,9 +298,9 @@ var browserCookies = require('browser-cookies');
   function checkFilter() {
     var latestFilter = browserCookies.get('filter');
     if (latestFilter === 'chrome') {
-      chromeFilter.setAttribute('checked', 'checked');
+      chromeFilter.click();
     } else if (latestFilter === 'sepia') {
-      sepiaFilter.setAttribute('checked', 'checked');
+      sepiaFilter.click();
     }
   }
 
