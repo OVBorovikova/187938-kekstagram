@@ -233,6 +233,8 @@ var browserCookies = require('browser-cookies');
    * кропнутое изображение в форму добавления фильтра и показывает ее.
    * @param {Event} evt
    */
+  var filters = document.getElementsByName('upload-filter');
+
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
 
@@ -241,6 +243,8 @@ var browserCookies = require('browser-cookies');
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
+
+      checkFilter();
     }
   };
 
@@ -263,7 +267,6 @@ var browserCookies = require('browser-cookies');
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
-    checkFilter();
     setFilter();
 
     cleanupResizer();
@@ -289,36 +292,28 @@ var browserCookies = require('browser-cookies');
 
   /** Проверяем, какой фильтр был выбран в прошлый раз  **/
 
+  var chromeFilter = document.getElementById('upload-filter-chrome');
+  var sepiaFilter = document.getElementById('upload-filter-sepia');
+
   function checkFilter() {
-
-    var selectedFilter = browserCookies.get('filter');
-    var filters = document.getElementsByName('upload-filter');
-
-    for (var i = 0; i < filters.length; i++) {
-      if (filters[i].checked) {
-        selectedFilter = filters[i];
-      }
+    var latestFilter = browserCookies.get('filter');
+    if (latestFilter === 'chrome') {
+      chromeFilter.setAttribute('checked', 'checked');
+    } else if (latestFilter === 'sepia') {
+      sepiaFilter.setAttribute('checked', 'checked');
     }
-    browserCookies.get('filter', selectedFilter.value, {expires: formattedDateToExpire});
   }
 
   /** Записываем выбранный фильтр в куки  **/
 
-  var filterNone = document.getElementById('upload-filter-none');
-  var filterChrome = document.getElementById('upload-filter-chrome');
-  var filterSepia = document.getElementById('upload-filter-sepia');
-
   function setFilter() {
-    if (filterChrome.checked) {
-      browserCookies.set('filterChrome', filterChrome.value, {expires: formattedDateToExpire});
-    } else
-    if (filterSepia.checked) {
-      browserCookies.set('filterSepia', filterSepia.value, {expires: formattedDateToExpire});
-    } else {
-      browserCookies.set('filterNone', filterNone.value, {expires: formattedDateToExpire});
+    for (var i = 0; i < filters.length; i++) {
+      if (filters[i].checked) {
+        var newFilter = filters[i];
+      }
     }
+    browserCookies.set('filter', newFilter.value, {expires: formattedDateToExpire});
   }
-
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
