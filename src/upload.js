@@ -7,6 +7,8 @@
 
 'use strict';
 
+var browserCookies = require('browser-cookies');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -231,6 +233,8 @@
    * кропнутое изображение в форму добавления фильтра и показывает ее.
    * @param {Event} evt
    */
+  var filters = document.getElementsByName('upload-filter');
+
   resizeForm.onsubmit = function(evt) {
     evt.preventDefault();
 
@@ -239,6 +243,8 @@
 
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
+
+      checkFilter();
     }
   };
 
@@ -261,12 +267,53 @@
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    setFilter();
+
     cleanupResizer();
     updateBackground();
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+
+  /** Вычисление количества дней, прошедших с ближайшего дня рождения **/
+
+  var fullBirthdayDate = new Date('1989-02-10');
+  var actualDate = new Date();
+  var actualYear = actualDate.getFullYear();
+  var lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear);
+
+  if (actualDate < lastBirthdayDate) {
+    lastBirthdayDate = fullBirthdayDate.setFullYear(actualYear - 1);
+  }
+
+  var dateToExpire = (Date.now() + (actualDate - lastBirthdayDate));
+  var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+
+  /** Проверяем, какой фильтр был выбран в прошлый раз  **/
+
+  var chromeFilter = document.getElementById('upload-filter-chrome');
+  var sepiaFilter = document.getElementById('upload-filter-sepia');
+
+  function checkFilter() {
+    var latestFilter = browserCookies.get('filter');
+    if (latestFilter === 'chrome') {
+      chromeFilter.click();
+    } else if (latestFilter === 'sepia') {
+      sepiaFilter.click();
+    }
+  }
+
+  /** Записываем выбранный фильтр в куки  **/
+
+  function setFilter() {
+    for (var i = 0; i < filters.length; i++) {
+      if (filters[i].checked) {
+        var newFilter = filters[i];
+      }
+    }
+    browserCookies.set('filter', newFilter.value, {expires: formattedDateToExpire});
+  }
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
