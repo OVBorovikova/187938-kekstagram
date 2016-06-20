@@ -1,5 +1,7 @@
 'use strict';
 
+var PHOTOS_LOAD_URL = '//o0.github.io/assets/json/pictures.json';
+
 /** Прячем блок с фильтрами **/
 
 var filtersToHide = document.querySelector('.filters');
@@ -47,8 +49,83 @@ var getPicturesElement = function(data, container) {
   return element;
 };
 
-window.pictures.forEach(function(picture) {
-  getPicturesElement(picture, pictureContainer);
+/** Загрузка  данных по XMLHttpRequest **/
+
+var getPhotos = function(callback) {
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.onloadstart = function() {
+    pictureContainer.classList.add('pictures-loading');
+  };
+
+  xhr.timeout = 10000;
+  xhr.ontimeout = function() {
+    pictureContainer.classList.remove('pictures-loading');
+    pictureContainer.classList.add('pictures-failure');
+  };
+
+  xhr.onerror = function() {
+    pictureContainer.classList.remove('pictures-loading');
+    pictureContainer.classList.add('pictures-failure');
+  };
+
+  xhr.onload = function(evt) {
+    pictureContainer.classList.remove('pictures-loading');
+    var loadedData = JSON.parse(evt.target.response);
+    callback(loadedData);
+  };
+
+  xhr.open('GET', PHOTOS_LOAD_URL);
+  xhr.send();
+};
+
+var renderPhotos = function(pictures) {
+  pictureContainer.innerHTML = '';
+  pictures.forEach(function(picture) {
+    getPicturesElement(picture, pictureContainer);
+  });
+};
+
+/** Фильтрация **/
+
+var getFilteredPhotos = function(pictures, filter) {
+
+  var picturesToFilter = pictures.slice(0);
+
+  switch (filter) {
+    case 'filter-popular':
+      break;
+    case 'filter-new':
+      break;
+    case 'filter-discussed':
+      picturesToFilter.sort(function(a, b) {
+        return b.comments - a.comments;
+      });
+      break;
+  }
+  return picturesToFilter;
+};
+
+var pictures = [];
+
+var setFilterEnabled = function(filter) {
+  var filteredPhotos = getFilteredPhotos(pictures, filter);
+  renderPhotos(filteredPhotos);
+};
+var setFiltrationEnabled = function() {
+  var filters = document.querySelectorAll('.filters-radio');
+  for (var i = 0; i < filters.length; i++) {
+    filters[i].onclick = function() {
+      setFilterEnabled(this.id);
+    };
+  }
+};
+
+getPhotos(function(loadedPhotos) {
+  pictures = loadedPhotos;
+  setFiltrationEnabled();
+  renderPhotos(pictures);
 });
 
 /** Отображаем блок с фильтрами **/
