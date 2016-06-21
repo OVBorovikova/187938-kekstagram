@@ -53,11 +53,9 @@ var getPicturesElement = function(data, container) {
 
 var getPhotos = function(callback) {
 
-  var xhr = new XMLHttpRequest();
+  pictureContainer.classList.add('pictures-loading');
 
-  xhr.onloadstart = function() {
-    pictureContainer.classList.add('pictures-loading');
-  };
+  var xhr = new XMLHttpRequest();
 
   xhr.timeout = 10000;
   xhr.ontimeout = function() {
@@ -97,6 +95,17 @@ var getFilteredPhotos = function(pictures, filter) {
     case 'filter-popular':
       break;
     case 'filter-new':
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var FOUR_DAYS = 4 * 24 * 60 * 60 * 1000;
+      picturesToFilter = picturesToFilter.filter(function(picture) {
+        var pictureLoadedTime = new Date(picture.date);
+        var interval = today - Date.parse(pictureLoadedTime);
+        return interval <= FOUR_DAYS;
+      });
+      picturesToFilter.sort(function(a, b) {
+        return Date.parse(b.date) - Date.parse(a.date);
+      });
       break;
     case 'filter-discussed':
       picturesToFilter.sort(function(a, b) {
