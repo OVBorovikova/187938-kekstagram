@@ -115,9 +115,6 @@ var getFilteredPhotos = function(pictures, filter) {
       });
       break;
   }
-  if (!picturesToFilter.length) {
-    pictureContainer.classList.add('.pictures-notfound');
-  }
   return picturesToFilter;
 };
 
@@ -125,7 +122,11 @@ var pictures = [];
 
 var setFilterEnabled = function(filter) {
   var filteredPhotos = getFilteredPhotos(pictures, filter);
-  renderPhotos(filteredPhotos);
+  if (filteredPhotos.length === 0) {
+    pictureContainer.classList.add('pictures-notfound');
+  } else {
+    renderPhotos(filteredPhotos);
+  }
 };
 var setFiltrationEnabled = function() {
   var filters = document.querySelectorAll('.filters-radio');
