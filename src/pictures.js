@@ -2,6 +2,8 @@
 
 var PHOTOS_LOAD_URL = '//o0.github.io/assets/json/pictures.json';
 
+var FOUR_DAYS = 4 * 24 * 60 * 60 * 1000;
+
 /** Прячем блок с фильтрами **/
 
 var filtersToHide = document.querySelector('.filters');
@@ -97,7 +99,7 @@ var getFilteredPhotos = function(pictures, filter) {
     case 'filter-new':
       var today = new Date();
       today.setHours(0, 0, 0, 0);
-      var FOUR_DAYS = 4 * 24 * 60 * 60 * 1000;
+
       picturesToFilter = picturesToFilter.filter(function(picture) {
         var pictureLoadedTime = new Date(picture.date);
         var interval = today - Date.parse(pictureLoadedTime);
@@ -112,6 +114,9 @@ var getFilteredPhotos = function(pictures, filter) {
         return b.comments - a.comments;
       });
       break;
+  }
+  if (!picturesToFilter.length) {
+    pictureContainer.classList.add('.pictures-notfound');
   }
   return picturesToFilter;
 };
